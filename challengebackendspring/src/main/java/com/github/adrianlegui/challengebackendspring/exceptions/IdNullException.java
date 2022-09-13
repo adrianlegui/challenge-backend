@@ -7,5 +7,5 @@ import lombok.experimental.StandardException;
 
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 @StandardException
-public class IdNullException extends RuntimeException {
+public class IdNullException extends RuntimeException {private static final long serialVersionUID = 1L;
 }

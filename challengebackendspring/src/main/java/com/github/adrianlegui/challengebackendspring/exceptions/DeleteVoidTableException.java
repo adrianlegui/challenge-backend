@@ -7,6 +7,6 @@ import lombok.experimental.StandardException;
 
 @ResponseStatus(value = HttpStatus.BAD_REQUEST)
 @StandardException
-public class DeleteVoidTableException extends RuntimeException {
+public class DeleteVoidTableException extends RuntimeException {private static final long serialVersionUID = 1L;
 
 }

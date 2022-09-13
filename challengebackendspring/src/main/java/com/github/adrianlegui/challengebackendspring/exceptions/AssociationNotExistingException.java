@@ -7,6 +7,6 @@ import lombok.experimental.StandardException;
 
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 @StandardException
-public class AssociationNotExistingException extends RuntimeException {
+public class AssociationNotExistingException extends RuntimeException {private static final long serialVersionUID = 1L;
 
 }

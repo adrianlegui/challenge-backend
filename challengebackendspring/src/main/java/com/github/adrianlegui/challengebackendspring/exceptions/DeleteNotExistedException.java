@@ -7,6 +7,6 @@ import lombok.experimental.StandardException;
 
 @ResponseStatus(value = HttpStatus.NOT_FOUND)
 @StandardException
-public class DeleteNotExistedException extends RuntimeException {
+public class DeleteNotExistedException extends RuntimeException {private static final long serialVersionUID = 1L;
 
 }

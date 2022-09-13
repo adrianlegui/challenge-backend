@@ -7,6 +7,6 @@ import lombok.experimental.StandardException;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
 @StandardException
-public class EntityNotFoundException extends RuntimeException {
+public class EntityNotFoundException extends RuntimeException {private static final long serialVersionUID = 1L;
 
 }
