@@ -115,5 +115,12 @@ public class SerieEntity {
 				return true;
 		return false;
 	}
+	
+	public boolean hasPersonajeWithId(Long personajeId) {
+		for(PersonajeEntity personaje : personajesEnSerie)
+			if(Objects.equals(personaje.getId(), personajeId))
+				return true;
+		return false;
+	}
 
 }
