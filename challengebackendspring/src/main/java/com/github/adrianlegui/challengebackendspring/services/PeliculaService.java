@@ -109,28 +109,25 @@ public class PeliculaService {
 		
 		List<PeliculaEntity> peliculaEntities = peliculaRepository.findAll();
 		
-		if(!peliculaEntities.isEmpty()) {
-			Iterator<PeliculaEntity> iterator = peliculaEntities.iterator();
-		
-			while(iterator.hasNext()) {
-				PeliculaEntity peliculaEntity = iterator.next();
-				
-				if((nombre != null && !nombre.equals(peliculaEntity.getTitulo()))
-					|| (idGenero != null && !peliculaEntity.hasGeneroWithIdNumber(idGenero)))
-					iterator.remove();
+		Iterator<PeliculaEntity> iterator = peliculaEntities.iterator();
 	
-			}
-				
-			if(orden != null) {
-				peliculaEntities.sort(Comparator.comparing(PeliculaEntity::getFechaDeCreacion));
-				
-				if(orden == Orden.DESC)
-					Collections.reverse(peliculaEntities);
-			}
+		while(iterator.hasNext()) {
+			PeliculaEntity peliculaEntity = iterator.next();
 			
-			for(PeliculaEntity pelicula : peliculaEntities)
-				peliculaDTOGETs.add(peliculaMapper.entityToDtoGet(pelicula));
+			if((nombre != null && !nombre.equals(peliculaEntity.getTitulo()))
+				|| (idGenero != null && !peliculaEntity.hasGeneroWithIdNumber(idGenero)))
+				iterator.remove();
 		}
+			
+		if(orden != null) {
+			peliculaEntities.sort(Comparator.comparing(PeliculaEntity::getFechaDeCreacion));
+			
+			if(orden == Orden.DESC)
+				Collections.reverse(peliculaEntities);
+		}
+		
+		for(PeliculaEntity pelicula : peliculaEntities)
+			peliculaDTOGETs.add(peliculaMapper.entityToDtoGet(pelicula));
 		
 		return peliculaDTOGETs;
 	}
