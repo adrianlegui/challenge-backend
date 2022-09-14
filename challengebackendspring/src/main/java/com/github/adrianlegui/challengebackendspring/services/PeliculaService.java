@@ -134,7 +134,7 @@ public class PeliculaService {
 	
 	public PeliculaDTO update(PeliculaDTOPATCH peliculaDTOPATCH) {
 		if(peliculaDTOPATCH.getId() == null)
-			throw new IdNullException("can not uptate with id null");
+			throw new IdNullException("can not update with id null");
 		
 		Optional<PeliculaEntity> peliculaOptional = peliculaRepository.findById(peliculaDTOPATCH.getId());
 		
