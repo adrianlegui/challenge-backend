@@ -13,7 +13,7 @@ import com.github.adrianlegui.challengebackendspring.entities.PeliculaEntity;
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface PeliculaMapper {
 
-	PeliculaDTOPATCH dtoToDtoPatch(PeliculaDTOPOST peliculaDTOPOST);
+	PeliculaDTOPATCH dtoPostToDtoPatch(PeliculaDTOPOST peliculaDTOPOST);
 
 	PeliculaEntity dtoPatchToEntity(PeliculaDTOPATCH peliculaDTOPATCH);
 

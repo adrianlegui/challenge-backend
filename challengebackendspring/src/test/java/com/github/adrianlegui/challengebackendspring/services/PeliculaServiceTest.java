@@ -130,7 +130,7 @@ class PeliculaServiceTest {
 		PeliculaDTOPATCH peliculaDTOPATCH = new PeliculaDTOPATCH();
 		peliculaDTOPATCH.setId(idFound);
 		
-		when(peliculaMapper.dtoToDtoPatch(peliculaDTOPOST)).thenReturn(peliculaDTOPATCH);
+		when(peliculaMapper.dtoPostToDtoPatch(peliculaDTOPOST)).thenReturn(peliculaDTOPATCH);
 		
 		PeliculaEntity peliculaParaCrear = new PeliculaEntity();
 		peliculaParaCrear.setId(idFound);

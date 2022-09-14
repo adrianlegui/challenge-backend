@@ -60,7 +60,7 @@ public class PeliculaService {
 				throw new EntityNotFoundException("genero not found with id " + genero.getId());
 		
 		// crear película sin asociaciones
-		PeliculaDTOPATCH peliculaDTOPATCH = peliculaMapper.dtoToDtoPatch(peliculaDTOPOST);
+		PeliculaDTOPATCH peliculaDTOPATCH = peliculaMapper.dtoPostToDtoPatch(peliculaDTOPOST);
 		PeliculaEntity peliculaParaCrear = peliculaMapper.dtoPatchToEntity(peliculaDTOPATCH);
 		PeliculaEntity peliculaCreada = peliculaRepository.save(peliculaParaCrear);
 		
