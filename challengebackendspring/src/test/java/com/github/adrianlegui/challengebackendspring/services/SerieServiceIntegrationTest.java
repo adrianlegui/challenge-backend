@@ -20,6 +20,7 @@ import com.github.adrianlegui.challengebackendspring.dto.SerieDTOPOST;
 import com.github.adrianlegui.challengebackendspring.entities.GeneroEntity;
 import com.github.adrianlegui.challengebackendspring.entities.PersonajeEntity;
 import com.github.adrianlegui.challengebackendspring.entities.SerieEntity;
+import com.github.adrianlegui.challengebackendspring.exceptions.AssociationNotExistingException;
 import com.github.adrianlegui.challengebackendspring.exceptions.DeleteNotExistedException;
 import com.github.adrianlegui.challengebackendspring.exceptions.DeleteVoidTableException;
 import com.github.adrianlegui.challengebackendspring.exceptions.EntityNotFoundException;
@@ -314,6 +315,127 @@ class SerieServiceIntegrationTest {
 
 		assertDoesNotThrow(() -> serieRepository.deleteAll());
 		assertEquals(0L, serieRepository.count());
+	}
+
+	@Test
+	void asociarPersonajeASerie_NotExistedPersonaje_ThrowEntityNotFoundException() {
+		PersonajeEntity notExistedPersonaje = personajeRepository
+			.save(new PersonajeEntity());
+		Long notExistedPersonajeId = notExistedPersonaje.getId();
+		personajeRepository.delete(notExistedPersonaje);
+
+		SerieEntity existedSerie = serieRepository
+			.save(new SerieEntity());
+		Long existedSerieId = existedSerie.getId();
+
+		assertThrows(
+			EntityNotFoundException.class,
+			() -> serieService.asociarPersonajeASerie(
+				existedSerieId,
+				notExistedPersonajeId));
+	}
+
+	@Test
+	void asociarPersonajeASerie_NotExistedSerie_ThrowEntityNotFoundException() {
+		PersonajeEntity existedPersonaje = personajeRepository
+			.save(new PersonajeEntity());
+		Long existedPersonajeId = existedPersonaje.getId();
+
+		SerieEntity notExistedSerie = serieRepository
+			.save(new SerieEntity());
+		Long notExistedSerieId = notExistedSerie.getId();
+		serieRepository.delete(notExistedSerie);
+
+		assertThrows(
+			EntityNotFoundException.class,
+			() -> serieService.asociarPersonajeASerie(
+				notExistedSerieId,
+				existedPersonajeId));
+	}
+
+	@Test
+	void asociarPersonajeASerie_SerieAndGeneroExisting_ReturnSerieDTO() {
+		PersonajeEntity existedpersonaje = personajeRepository
+			.save(new PersonajeEntity());
+		Long existedPersonajeId = existedpersonaje.getId();
+
+		SerieEntity existedSerie = serieRepository
+			.save(new SerieEntity());
+		Long existedSerieId = existedSerie.getId();
+
+		SerieDTO resultado = serieService
+			.asociarPersonajeASerie(existedSerieId, existedPersonajeId);
+
+		Optional<SerieEntity> serieOptional = serieRepository
+			.findById(existedSerieId);
+
+		assertNotNull(resultado);
+		assertFalse(resultado.getPersonajesEnSerie().isEmpty());
+		assertEquals(
+			existedPersonajeId,
+			resultado.getPersonajesEnSerie().get(0).getId());
+		assertTrue(
+			serieOptional.get().hasPersonajeWithId(existedPersonajeId));
+	}
+
+	@Test
+	void desasociarPersonajeASerie_NotExistedAssociation_ThrowAssociationNotExistingException() {
+		PersonajeEntity notExistedAssociation = personajeRepository
+			.save(new PersonajeEntity());
+		Long notExistedAssociationId = notExistedAssociation.getId();
+
+		SerieEntity existedSerie = serieRepository
+			.save(new SerieEntity());
+		Long existedSerieId = existedSerie.getId();
+
+		assertThrows(
+			AssociationNotExistingException.class,
+			() -> serieService.desasociarPersonajeASerie(
+				existedSerieId,
+				notExistedAssociationId));
+	}
+
+	@Test
+	void desasociarPersonajeASerie_NotExistedSerie_ThrowEntityNotFoundException() {
+		PersonajeEntity personaje = personajeRepository
+			.save(new PersonajeEntity());
+		Long personajeId = personaje.getId();
+
+		SerieEntity notExistedSerie = serieRepository
+			.save(new SerieEntity());
+		Long notExistedSerieId = notExistedSerie.getId();
+		serieRepository.delete(notExistedSerie);
+
+		assertThrows(
+			EntityNotFoundException.class,
+			() -> serieService.desasociarPersonajeASerie(
+				notExistedSerieId,
+				personajeId));
+	}
+
+	@Test
+	void desasociarPersonajeASerie_SerieAndAssociationExisting_DoesNotThrowException() {
+		PersonajeEntity personaje = personajeRepository
+			.save(new PersonajeEntity());
+		Long existedAssociationId = personaje.getId();
+
+		SerieEntity existedSerie = serieRepository
+			.save(new SerieEntity());
+		existedSerie.addPersonaje(personaje);
+		existedSerie = serieRepository.save(existedSerie);
+		Long existedSerieId = existedSerie.getId();
+
+		Optional<SerieEntity> serieOptional = serieRepository
+			.findById(existedSerieId);
+
+		assertDoesNotThrow(
+			() -> serieService.desasociarPersonajeASerie(
+				existedSerieId,
+				existedAssociationId));
+
+		assertFalse(
+			serieOptional.get()
+				.hasPersonajeWithId(existedAssociationId));
 	}
 
 }
