@@ -33,6 +33,8 @@ import com.github.adrianlegui.challengebackendspring.repositories.SerieRepositor
 @Service
 @Transactional
 public class SerieService {
+	private static final String SERIE_NOT_FOUND_WITH_ID = "serie not found with id ";
+
 	@Autowired
 	private PersonajeRepository personajeRepository;
 
@@ -106,7 +108,7 @@ public class SerieService {
 
 		if (serieOptional.isEmpty())
 			throw new EntityNotFoundException(
-				"serie not found with id " + id);
+				SERIE_NOT_FOUND_WITH_ID + id);
 		else {
 			SerieEntity serieEntity = serieOptional.get();
 			return serieMapper.entityToDtoGet(serieEntity);
@@ -160,7 +162,7 @@ public class SerieService {
 
 		if (serieOptional.isEmpty())
 			throw new EntityNotFoundException(
-				"serie not found with id "
+				SERIE_NOT_FOUND_WITH_ID
 					+ serieDTOPATCH.getId());
 		else {
 			SerieEntity serieActualizada = serieMapper
@@ -226,7 +228,7 @@ public class SerieService {
 
 		if (serieOptional.isEmpty())
 			throw new EntityNotFoundException(
-				"serie not found with id " + personajeId);
+				SERIE_NOT_FOUND_WITH_ID + personajeId);
 
 		SerieEntity serieEntity = serieOptional.get();
 		serieEntity.addPersonaje(personajeOptional.get());
@@ -244,7 +246,7 @@ public class SerieService {
 
 		if (serieOptional.isEmpty())
 			throw new EntityNotFoundException(
-				"serie not found with id " + serieId);
+				SERIE_NOT_FOUND_WITH_ID + serieId);
 
 		SerieEntity serieEntity = serieOptional.get();
 		if (!serieEntity.hasPersonajeWithId(personajeId))
